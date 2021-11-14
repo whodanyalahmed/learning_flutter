@@ -19,6 +19,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
         fontFamily: GoogleFonts.poppins().fontFamily,
+        appBarTheme: AppBarTheme(
+          color: Colors.white,
+          elevation: 0,
+          iconTheme: const IconThemeData(
+            color: Colors.black,
+          ),
+          titleTextStyle: GoogleFonts.poppins(
+            textStyle: const TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
       ),
       themeMode: ThemeMode.light,
       darkTheme: ThemeData(
