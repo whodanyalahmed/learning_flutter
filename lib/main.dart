@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.light,
       darkTheme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
       ),
       initialRoute: MyRoutes.login,
       routes: {
