@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
         title: Text('Catalog App'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
         child: ListView.builder(
           itemCount: dummylist.length,
           itemBuilder: (BuildContext context, int index) {
