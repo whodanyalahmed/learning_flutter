@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application_3/models/catalog.dart';
 import 'package:flutter_application_3/widget/drawer.dart';
 import 'package:flutter_application_3/widget/item_widget.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-    initState() {
+  initState() {
     super.initState();
     loadJsonData();
   }
@@ -25,7 +26,8 @@ class _HomePageState extends State<HomePage> {
     var jsonString = await rootBundle.loadString("assets/files/catalog.json");
     var jsonData = jsonDecode(jsonString);
     var productData = jsonData["products"];
-    CatalogModel.items = List.from(productData).map((data) => Item.fromJson(data)).toList();
+    CatalogModel.items =
+        List.from(productData).map((data) => Item.fromJson(data)).toList();
     setState(() {});
     // print(jsonData);
   }
@@ -33,24 +35,76 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Catalog App'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-        child: (CatalogModel.items != null && CatalogModel.items.isNotEmpty) ? ListView.builder(
-          itemCount: CatalogModel.items.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ItemWidget(
-              item: CatalogModel.items[index],
-            );
-          },
-        ) : 
-        Center(
-          child: CircularProgressIndicator(),
+        body: SafeArea(
+      child: Container(
+        padding: Vx.m32,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CatalogHeader(),
+            if (CatalogModel.items != null && CatalogModel.items.isNotEmpty)
+              const CatalogList().expand()
+            else
+              const Center(child: CircularProgressIndicator()),
+          ],
         ),
       ),
-      drawer: MyDrawer(),
+    ));
+  }
+}
+
+class CatalogHeader extends StatelessWidget {
+  const CatalogHeader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        "Catalog App"
+            .text
+            .xl5
+            .bold
+            .color(const Color.fromARGB(255, 25, 5, 55))
+            .make(),
+        "Trending products".text.xl2.make(),
+      ],
     );
+  }
+}
+
+class CatalogList extends StatelessWidget {
+  const CatalogList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: CatalogModel.items.length,
+      itemBuilder: (context, index) {
+        final catalog = CatalogModel.items[index];
+        return CatalogItem(catalog: catalog);
+      },
+    );
+  }
+}
+
+class CatalogItem extends StatelessWidget {
+  final Item catalog;
+
+  const CatalogItem({Key? key, required this.catalog})
+      // ignore: unnecessary_null_comparison
+      : assert(catalog != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return VxBox(
+      child: Row(
+        children: [
+          Image.network(catalog.image),
+        ],
+      ),
+    ).white.rounded.square(100).make().py16();
   }
 }
