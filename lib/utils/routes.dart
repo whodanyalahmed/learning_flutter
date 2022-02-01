@@ -3,4 +3,5 @@ class MyRoutes {
   static const String login = '/login';
   static const String homeDetailsRouter = '/details';
   static const String register = '/register';
+  static const String cartRoute = '/cart';
 }
